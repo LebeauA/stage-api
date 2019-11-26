@@ -1,0 +1,5 @@
+name: comment form block
+type: module
+description: 'Place a block with a form on document page'
+core: 8.x
+package: Perso

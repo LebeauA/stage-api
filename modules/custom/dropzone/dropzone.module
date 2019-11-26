@@ -1,0 +1,11 @@
+<?php
+/**
+* Implements hook_theme().
+*/
+function dropzone_theme() {
+  return [
+    'dropzone' => [
+      'variables' => ['project' => NULL],
+    ],
+  ];
+}

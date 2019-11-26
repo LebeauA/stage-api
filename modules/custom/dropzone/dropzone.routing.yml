@@ -1,0 +1,10 @@
+dropzone.upload:
+  path: '/dropzone/uploadOnProject/{project}'
+  defaults:
+    _title: 'dropzone'
+    _controller: '\Drupal\dropzone\Controller\dropzoneController::filesUpload'
+  options:
+    parameters:
+      project: entity:node
+  requirements:
+    _access: 'TRUE'

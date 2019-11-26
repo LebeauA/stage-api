@@ -1,0 +1,5 @@
+name: dropzone
+type: module
+description: 'Place a block with a form and a Dropzone'
+core: 8.x
+package: Perso

@@ -1,0 +1,5 @@
+name: to_pdf
+type: module
+description: 'convert a file to pdf'
+core: 8.x
+package: Perso

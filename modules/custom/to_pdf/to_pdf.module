@@ -1,0 +1,41 @@
+<?php
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+
+use Drupal\to_pdf\Detector;
+use Drupal\to_pdf\ConvertFile;
+use \Drupal\file\Entity\File;
+use Drupal\Core\Url;
+
+function to_pdf_node_insert($entity) {
+    if(($entity->bundle() === ('document') || $entity->bundle() === ('report'))){
+
+        //recovers the user's OS
+        $os=Detector::detect_server_is_windows();
+        $bin =$os ? 'C:\Program Files\LibreOffice\program\soffice.exe' : 'export HOME=/tmp/ && libreoffice';
+
+        //Getting some variables
+        $fileUri = $entity->field_file->entity->getFileUri();
+        $path_parts = pathinfo($fileUri);
+
+        //Use the script set to : to_pdf/src/ConvertFile.php
+        ConvertFile::converter($fileUri, $bin, file_directory_temp());
+
+        $fileName = $path_parts['filename'];
+        $pathFile = $path_parts['dirname'];
+        $source = file_directory_temp()."/".$fileName.".pdf";
+
+        \Drupal::service('file_system')->move($source, $pathFile);
+
+        $file = File::Create([
+          'uri' => $pathFile.DIRECTORY_SEPARATOR.$fileName.".pdf",
+        ]);
+        $file->save();
+
+        $entity->field_file_preview->setValue([
+          'target_id' => $file->id(),
+        ]);
+        $entity->save();
+    }
+}
